@@ -1,0 +1,24 @@
+@import 'variables.scss';
+a {
+	display: flex !important;
+	color: #9b2335;
+	text-decoration: none;
+	font-family: 'Roboto', sans-serif;
+	transition: transform 500ms ease;
+}
+
+a:hover {
+	cursor: pointer;
+	transform: translate(2px, -4px);
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+}
+body {
+	background-color: #F9F6F4;
+	font-family: $f-6;
+	font-size: 16px;
+	color:#1E0D03;
+}

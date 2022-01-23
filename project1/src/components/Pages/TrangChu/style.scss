@@ -3,5 +3,20 @@
     justify-content:space-between;
     flex-direction:row;
     align-items: center;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
+}
+
+.areaChartWrap{
+    margin: 0.15rem 0rem;
+}
+.donutChartWrap{
+    display:flex;
+    justify-content:space-between;
+    flex-direction:row;
+    margin: 0.15rem 0rem;
+}
+.sub2Text{
+    color:#1E0D03;
+    font-size:0.875rem;
+    margin-bottom: 0.125rem;
 }

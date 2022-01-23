@@ -5,6 +5,8 @@ import BoxDate from '../../common/BoxDate';
 import Search from '../../Search';
 import ButtonOutLine from '../../common/ButtonOutLine';
 import {ReactComponent as Filter} from '../../../assets/svg/filter.svg'
+import Table from '../../Table';
+import Pagination from '../../Pagination';
 
 const index = () => {
   return (
@@ -20,6 +22,12 @@ const index = () => {
                     <h4>Xuất file (.csv)</h4>
                 </ButtonOutLine>
             </div>
+        </div>
+        <div className="tableMain"> 
+            <Table></Table>
+        </div>
+        <div className="tablePagination">
+            <Pagination></Pagination>
         </div>
     </BoxMain>
   );

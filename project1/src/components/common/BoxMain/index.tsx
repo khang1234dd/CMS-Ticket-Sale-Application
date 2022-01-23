@@ -10,13 +10,15 @@ type boxProps = {
 
 const BoxStyle={
   borderRadius:'24px',
-  height:'85vh',
+  height:'auto',
   width:'auto',
   marginLeft: '300px',
   marginRight: '1.25rem',
+  marginBottom: '1.25rem',
   minWidth: '650px',
   backgroundColor:'#fff',
   padding: '1.5rem',
+  minHeight: '85vh',
 }
 
 

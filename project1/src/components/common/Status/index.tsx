@@ -1,30 +1,32 @@
-import React from 'react';
-import './style.scss'
+import React from "react";
+import "./style.scss";
 
-type statusProps ={
-    status: string
-}
+type statusProps = {
+  status: 'dasudung' | 'hethan' | 'chuasudung';
+  style?: React.CSSProperties | {};
+};
 
-const index = ({status}:statusProps ) => {
-  return (<div className="wrapMain">
-  <div className="circle"></div>
-  <div className="textStyle">Đã sử dụng</div>
-</div>)
-    
+const index = ({ status, style }: statusProps) => {
+  return (
+    <>
+      {status === "dasudung" ? (
+        <div className="wrapMainStatus" style={style}>
+          <div className="circle"></div>
+          <div className="textStatusStyle">Đã sử dụng</div>
+        </div>
+      ) : status === "hethan" ? (
+        <div className="wrapMainStatus wrapMainStatus-red" style={style}>
+          <div className="circle circle-red"></div>
+          <div className="textStatusStyle textStatusStyle-red">Hết hạn</div>
+        </div>
+      ) : (
+        <div className="wrapMainStatus wrapMainStatus-green" style={style}>
+          <div className="circle circle-green"></div>
+          <div className="textStatusStyle textStatusStyle-green">Chưa sử dụng</div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default index;
-{/* <div className="wrapMain">
-        <div className="circle"></div>
-        <div className="textStyle">Đã sử dụng</div>
-    </div>
-    )
-    :status ==='hethan'?
-        <div className="wrapMain">
-            <div className="circle"></div>
-            <div className="textStyle">Đã sử dụng</div>
-        </div>
-    :<div className="wrapMain">
-        <div className="circle"></div>
-        <div className="textStyle">Đã sử dụng</div>
-    </div> */}

@@ -1,25 +1,46 @@
-.wrapMain{
+.wrapMainStatus{
     display: flex;
     justify-content: space-between;
     flex-direction: row;
     align-items: center;
     border: 1px solid #919DBA;
     border-radius:4px;
-    width:101px;
+    width:70%;
     height:31px;
     padding: 0px 7px;
+    &-red{
+        width:55%;
+        border: 1px solid #FD5959;
+        background-color: #F8EBE8;
+    }
+    &-green{
+        background-color: #DEF7E0;
+        border: 1px solid #03AC00;
+        width:80%;
+    }
 }
 .circle{
-    border: 1px solid #919DBA;
+    border: none;
     border-radius:50%;
     background-color: #919DBA;
     width:8px;
     height:8px;
-   
+    &-red{
+        background-color: #FD5959;
+    }
+    &-green{
+        background-color: #03AC00;
+    }
 }
-.textStyle{
+.textStatusStyle{
     color: #919DBA;
     font-family: 'Montserrat', sans-serif;
     font-size: 0.8rem;
     font-weight:500;
+    &-red{
+        color: #FD5959;
+    }
+    &-green{
+        color: #03AC00;
+    }
 }

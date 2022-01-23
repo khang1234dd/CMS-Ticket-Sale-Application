@@ -1,0 +1,14 @@
+.PaginationWrap{
+    display:flex;
+    flex-direction: row;
+}
+.buttonPagination{
+    border:none;
+    background-color: transparent;
+    // color:#FF993C;
+    color: #A5A8B1;
+}
+.buttonPagination:hover{
+    color: #FF993C;
+    
+}

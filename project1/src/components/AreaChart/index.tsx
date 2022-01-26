@@ -15,7 +15,7 @@ const AreaChart = () => {
 
   const chartOptions:any = {
     chart: { toolbar: "false" },
-    dataLabels: { enabled: !1 },
+    dataLabels: { enabled: !1},
     stroke: { curve: "smooth", width: 2 },
     markers: { size: 0, style: "hollow" },
     xaxis: {
@@ -25,6 +25,10 @@ const AreaChart = () => {
       tickAmount: 3,
       min: 140,
       max: 260,
+      labels: {
+        formatter: (value:any) => { return value + "tr"},
+      }
+      
     },
     colors: ["#FF993C"],
     fill: {

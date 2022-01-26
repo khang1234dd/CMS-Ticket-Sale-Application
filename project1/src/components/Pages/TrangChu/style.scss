@@ -13,7 +13,13 @@
     display:flex;
     justify-content:space-between;
     flex-direction:row;
+    width: auto;
+    height: auto;
     margin: 0.15rem 0rem;
+}
+.titleDonut{
+    display:block;
+
 }
 .sub2Text{
     color:#1E0D03;

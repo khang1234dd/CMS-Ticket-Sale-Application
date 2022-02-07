@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import Table from "@mui/material/Table";
@@ -9,7 +9,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Status from "../common/Status";
-import { borderRadius } from "@mui/system";
+
+type TableProps = {
+  dataTable: Array<any>;
+  type: "quanlyve" | "doisoatve" | "caidat";
+};
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -51,113 +55,100 @@ const tableStyle = makeStyles({
   },
 });
 
-function createData(
-  stt: number,
-  bookingcode: string,
-  sove: number,
-  tensukien: string,
-  ttsd: any,
-  ngaysudung: string,
-  ngayxuatve: string,
-  cong: string
-) {
-  return {
-    stt,
-    bookingcode,
-    sove,
-    tensukien,
-    ttsd,
-    ngaysudung,
-    ngayxuatve,
-    cong,
-  };
-}
-
-const rows = [
-  createData(
-    1,
-    "ALT20210501",
-    123456789034,
-    "Hội chợ triển lãm tiêu dùng 2021",
-    <Status status="dasudung" />,
-    "14/4/2021",
-    "14/4/2021",
-    "Cổng 1"
-  ),
-  createData(
-    2,
-    "ALT20210501",
-    123456789034,
-    "Hội chợ triển lãm tiêu dùng 2021",
-    <Status status="chuasudung" />,
-    "14/4/2021",
-    "14/4/2021",
-    "Cổng 1"
-  ),
-  createData(
-    3,
-    "ALT20210501",
-    123456789034,
-    "Hội chợ triển lãm tiêu dùng 2021",
-    <Status status="hethan" />,
-    "14/4/2021",
-    "14/4/2021",
-    "Cổng 1"
-  ),
-  createData(
-    4,
-    "ALT20210501",
-    123456789034,
-    "Hội chợ triển lãm tiêu dùng 2021",
-    <Status status="hethan" />,
-    "14/4/2021",
-    "14/4/2021",
-    "Cổng 1"
-  ),
-  createData(
-    5,
-    "ALT20210501",
-    123456789034,
-    "Hội chợ triển lãm tiêu dùng 2021",
-    <Status status="dasudung" />,
-    "14/4/2021",
-    "14/4/2021",
-    "Cổng 1"
-  ),
-  //   createData(5,'ALT20210501',123456789034,'Hội chợ triển lãm tiêu dùng 2021',<Status status="dasudung" />, '14/4/2021', '14/4/2021', 'Cổng 1'),
-  //   createData(6,'ALT20210501',123456789034,'Hội chợ triển lãm tiêu dùng 2021',<Status status="dasudung" />, '14/4/2021', '14/4/2021', 'Cổng 1'),
-];
-
-export default function CustomizedTables() {
+export default function CustomizedTables({ dataTable, type }: TableProps) {
   const classes = tableStyle();
+
+  const renderTTSD = (value: String) => {
+    switch (value) {
+      case "dasudung":
+        return <Status status="dasudung"></Status>;
+      case "hethan":
+        return <Status status="hethan"></Status>;
+      case "chuasudung":
+        return <Status status="chuasudung"></Status>;
+      default:
+        return <Status status="chuasudung"></Status>;
+    }
+  };
+
   return (
     <TableContainer component={Paper} className={classes.table}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>STT</StyledTableCell>
-            <StyledTableCell>Booking code</StyledTableCell>
-            <StyledTableCell>Số vé</StyledTableCell>
-            <StyledTableCell>Tên sự kiện</StyledTableCell>
-            <StyledTableCell>Tình trạng sử dụng</StyledTableCell>
-            <StyledTableCell>Ngày sử dụng</StyledTableCell>
-            <StyledTableCell>Ngày xuất vé</StyledTableCell>
-            <StyledTableCell>Cổng check - in</StyledTableCell>
+            {type === "quanlyve" ? (
+              <>
+                <StyledTableCell>STT</StyledTableCell>
+                <StyledTableCell>Booking code</StyledTableCell>
+                <StyledTableCell>Số vé</StyledTableCell>
+                <StyledTableCell>Tên sự kiện</StyledTableCell>
+                <StyledTableCell>Tình trạng sử dụng</StyledTableCell>
+                <StyledTableCell>Ngày sử dụng</StyledTableCell>
+                <StyledTableCell>Ngày xuất vé</StyledTableCell>
+                <StyledTableCell>Cổng check - in</StyledTableCell>
+              </>
+            ) : type === "doisoatve" ? (
+              <>
+                <StyledTableCell>STT</StyledTableCell>
+                <StyledTableCell>Số vé</StyledTableCell>
+                <StyledTableCell>Tên sự kiện</StyledTableCell>
+                <StyledTableCell>Ngày sử dụng</StyledTableCell>
+                <StyledTableCell>Tên loại vé</StyledTableCell>
+                <StyledTableCell>Cổng check - in</StyledTableCell>
+                <StyledTableCell>&nbsp;</StyledTableCell>
+              </>
+            ) : (
+              <>
+                <StyledTableCell>STT</StyledTableCell>
+                <StyledTableCell>Mã gói</StyledTableCell>
+                <StyledTableCell>Tên gói vé</StyledTableCell>
+                <StyledTableCell>Ngày áp dụng</StyledTableCell>
+                <StyledTableCell>Ngày hết hạn</StyledTableCell>
+                <StyledTableCell>Giá vé (VNĐ/Vé)</StyledTableCell>
+                <StyledTableCell>Giá Combo (VNĐ/Combo)</StyledTableCell>
+                <StyledTableCell>Tình trạng</StyledTableCell>
+                <StyledTableCell>&nbsp;</StyledTableCell>
+              </>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.stt.toString()}>
+          {dataTable.map((row: any, id: number) => (
+            <StyledTableRow key={id.toString()}>
               <StyledTableCell component="th" scope="row">
-                {row.stt}
+                {(id + 1).toString()}
               </StyledTableCell>
-              <StyledTableCell>{row.bookingcode}</StyledTableCell>
-              <StyledTableCell>{row.sove}</StyledTableCell>
-              <StyledTableCell>{row.tensukien}</StyledTableCell>
-              <StyledTableCell>{row.ttsd}</StyledTableCell>
-              <StyledTableCell>{row.ngaysudung}</StyledTableCell>
-              <StyledTableCell>{row.ngayxuatve}</StyledTableCell>
-              <StyledTableCell>{row.cong}</StyledTableCell>
+              {type === "quanlyve" ? (
+                <>
+                  <StyledTableCell>{row.bookingcode}</StyledTableCell>
+                  <StyledTableCell>{row.sove}</StyledTableCell>
+                  <StyledTableCell>{row.tensukien}</StyledTableCell>
+                  <StyledTableCell>{renderTTSD(row.ttsd)}</StyledTableCell>
+                  <StyledTableCell>{row.ngaysudung}</StyledTableCell>
+                  <StyledTableCell>{row.ngayxuatve}</StyledTableCell>
+                  <StyledTableCell>{row.cong}</StyledTableCell>
+                </>
+              ) : type === "doisoatve" ? (
+                <>
+                  <StyledTableCell>{row.bookingcode}</StyledTableCell>
+                  <StyledTableCell>{row.sove}</StyledTableCell>
+                  <StyledTableCell>{row.tensukien}</StyledTableCell>
+                  <StyledTableCell>{renderTTSD(row.ttsd)}</StyledTableCell>
+                  <StyledTableCell>{row.ngaysudung}</StyledTableCell>
+                  <StyledTableCell>{row.ngayxuatve}</StyledTableCell>
+                  <StyledTableCell>{row.cong}</StyledTableCell>
+                </>
+              ) : (
+                <>
+                  <StyledTableCell>{row.bookingcode}</StyledTableCell>
+                  <StyledTableCell>{row.sove}</StyledTableCell>
+                  <StyledTableCell>{row.tensukien}</StyledTableCell>
+                  <StyledTableCell>{renderTTSD(row.ttsd)}</StyledTableCell>
+                  <StyledTableCell>{row.ngaysudung}</StyledTableCell>
+                  <StyledTableCell>{row.ngayxuatve}</StyledTableCell>
+                  <StyledTableCell>{row.cong}</StyledTableCell>
+                </>
+              )}
             </StyledTableRow>
           ))}
         </TableBody>

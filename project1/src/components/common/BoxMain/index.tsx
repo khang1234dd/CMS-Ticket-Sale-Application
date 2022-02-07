@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 type boxProps = {
     header: string,
     children: React.ReactNode,
-
+    style?: React.CSSProperties |{}
 }
 
 const BoxStyle={
@@ -15,16 +15,15 @@ const BoxStyle={
   marginLeft: '300px',
   marginRight: '1.25rem',
   marginBottom: '1.25rem',
-  minWidth: '650px',
   backgroundColor:'#fff',
   padding: '1.5rem',
   minHeight: '85vh',
 }
 
 
-const index = ({header,children}:boxProps) => {
+const index = ({header,children,style}:boxProps) => {
   return (
-    <Box sx={BoxStyle}>
+    <Box sx={BoxStyle} style={style} >
       <div className="headerStyle">{header}</div>
       {children}
     </Box>

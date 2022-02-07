@@ -1,0 +1,37 @@
+.BoxLocVe{
+    &-center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &-title{
+        font-size:1rem;
+        font-weight:bold;
+    }
+    &-marginTop{
+        &-15{
+            margin-top:1.5rem;
+        }
+        &-2{
+            margin-top:2rem;
+        }
+    }
+    &-formStyle{
+        display:flex;
+        justify-content:space-between;
+        flex-direction:row !important;
+    }
+    &-fontStyle{
+        color: #1E0D03;
+        font-size: 1rem;
+
+        &-bold{
+            font-weight: 600;
+            
+        }
+        &-normal{
+            font-weight: 500;
+            opacity:0.7
+        }
+    }
+}

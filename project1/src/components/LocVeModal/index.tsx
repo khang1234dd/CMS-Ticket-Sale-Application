@@ -219,7 +219,7 @@ const LocVeModal = ({ open, handleClose }: LocVeModalProps) => {
                   value="2"
                   control={
                     <StyleCheckBox
-                      checked={checked[2]}
+                    checked={!checked[0] ? checked[2] : false}
                       onChange={handleChange2}
                     />
                   }
@@ -233,7 +233,7 @@ const LocVeModal = ({ open, handleClose }: LocVeModalProps) => {
                   value="3"
                   control={
                     <StyleCheckBox
-                      checked={checked[3]}
+                    checked={!checked[0] ? checked[3] : false}
                       onChange={handleChange3}
                     />
                   }
@@ -245,7 +245,7 @@ const LocVeModal = ({ open, handleClose }: LocVeModalProps) => {
                   value="4"
                   control={
                     <StyleCheckBox
-                      checked={checked[4]}
+                    checked={!checked[0] ? checked[4] : false}
                       onChange={handleChange4}
                     />
                   }
@@ -257,7 +257,7 @@ const LocVeModal = ({ open, handleClose }: LocVeModalProps) => {
                   value="5"
                   control={
                     <StyleCheckBox
-                      checked={checked[5]}
+                    checked={!checked[0] ? checked[5] : false}
                       onChange={handleChange5}
                     />
                   }

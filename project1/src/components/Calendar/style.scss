@@ -1,0 +1,93 @@
+.Calendar{
+    height:auto;
+    min-width:370px;
+    // min-height:396px;
+    border-radius: 20px;
+    box-shadow: 4px 4px 45px rgba(109, 46, 0, 0.35);
+    display: flex;
+    flex-direction:column;
+    padding: 1rem 1rem;
+    &-wrap{
+        // border: 1px solid black;
+        margin: 0 1rem;
+        &-radioButton{
+            display: flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-direction:row;
+            margin: 0 1rem;
+        }
+        &-month{
+            display: flex;
+            justify-content:flex-start;
+            align-items:center;
+            flex-direction:row;
+        }
+    }
+    &-header {
+        display: flex;
+        justify-content:space-between;
+        flex-direction:row;
+        align-items: center;
+
+        &-item{
+            min-width: 2rem;
+            min-height:2rem;
+            display: flex;
+            justify-content:center;
+            align-items:center;
+            color:#C55E00;
+            font-size:1rem;
+            font-weight:600;
+        }
+    }
+    &-month{
+        color:#23221F;
+        font-weight: bold;
+        font-size:1rem;
+
+    }
+    
+    
+    &-week{
+        height: auto;
+        display: flex;
+        justify-content:space-between;
+        flex-direction:row;
+        margin: 0.25rem 0;
+        // border: 1px solid black;
+        &-selected{
+            border: 1px solid #FFD2A8;
+            border-radius: 16px;
+            background-color: #FFD2A8;
+        }
+        &-dayselected{
+            border-radius: 16px;
+            background-color: #FFBA7B;
+        }
+        
+    }
+    &-day{
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        min-width: 2rem;
+        min-height:2rem;
+        border-radius: 50%;
+        font-weight: 500;
+        color: #1E0D03;
+        font-size: 0.875rem;
+        &-selected{
+            background-color: #FFBA7B;
+            border-radius: 50%;
+        }
+        
+        &-beforestartday{
+            color: #24221f4b;
+            opacity:1;
+        }
+        &:hover{
+            background-color: #FFBA7B;
+        }
+    }
+}

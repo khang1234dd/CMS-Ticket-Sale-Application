@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './style.scss'
 import BoxMain from '../../common/BoxMain/index'
 import BoxDate from '../../common/BoxDate';
@@ -8,9 +8,27 @@ import {ReactComponent as Filter} from '../../../assets/svg/filter.svg'
 import Table from '../../Table';
 import Pagination from '../../Pagination';
 import LocVeModal from '../../LocVeModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDataTableDSV } from '../../../redux/actions';
+import { timeStamp } from 'console';
 
 const QuanLyVe = () => {
     const [open,setOpen] = useState<boolean>(false)
+    const dispatch = useDispatch();
+
+    const dataTable = useSelector((state:any) => state.danhSachVe.dataTable)
+    
+  
+    useEffect(() =>{
+        // dispatch(addDataTableDSV(rows))
+        // (setTimeout(() => dispatch(getDataTableDSV()),2000))
+        dispatch(getDataTableDSV())
+        console.log('dataTable - view =>',dataTable)
+        // (async()=>{
+        //      await dispatch(getDataTableDSV())
+        //     console.log('dataTable - view =>',dataTable)
+        // })()
+    },[])
   return (
     <>
      
@@ -28,7 +46,7 @@ const QuanLyVe = () => {
                 </div>
             </div>
             <div className="tableMain"> 
-                <Table></Table>
+                <Table dataTable={dataTable} type="quanlyve"></Table>
             </div>
             <div className="tablePagination">
                 <Pagination></Pagination>

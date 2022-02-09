@@ -23,7 +23,7 @@
     }
     &-fontStyle{
         color: #1E0D03;
-        font-size: 1rem;
+        font-size: 0.875rem;
 
         &-bold{
             font-weight: 600;
@@ -32,6 +32,12 @@
         &-normal{
             font-weight: 500;
             opacity:0.7
+        }
+    }
+    &-radiolabel{
+        color: #786D67;
+        &-label{
+            font-size:0.875rem;
         }
     }
 }

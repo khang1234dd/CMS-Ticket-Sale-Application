@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './style.scss'
 import BoxMain from '../../common/BoxMain/index'
 import Search from '../../Search';
 import ButtonOutLine from '../../common/ButtonOutLine';
 import {ReactComponent as Filter} from '../../../assets/svg/filter.svg'
+import { useDispatch, useSelector } from 'react-redux';
+import { getDataTableGoiVe } from '../../../redux/actions';
+import Table from '../../Table';
 
-const index = () => {
+const CaiDat = () => {
+  const  dispatch = useDispatch()
+  const dataTable =  useSelector((state:any)=> state.goiVe.dataTable)
+
+  useEffect(() =>{
+
+    dispatch(getDataTableGoiVe())
+    console.log('dataTable - view =>',dataTable)
+
+},[])
   return (
     <BoxMain header="Danh sách gói vé">
         <div className="subHeaderStyle">
@@ -19,8 +31,11 @@ const index = () => {
                 </ButtonOutLine>
             </div>
         </div>
+        <div className="CaiDat-marginTop2">
+            <Table dataTable={dataTable} type="caidat"></Table>
+        </div>
     </BoxMain>
   );
 };
 
-export default index;
+export default CaiDat;

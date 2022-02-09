@@ -1,15 +1,16 @@
-import { getFirebase } from "react-redux-firebase";
-import { applyMiddleware, compose, createStore } from "redux";
+import { applyMiddleware ,createStore } from "redux";
+import {composeWithDevTools} from 'redux-devtools-extension'
 import { getFirestore } from "redux-firestore";
 import thunk from "redux-thunk";
 import rootReducers from "../reducers";
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
 
 const store = createStore(
     rootReducers,
-    composeEnhancers(applyMiddleware(thunk)),
+    composeWithDevTools(applyMiddleware(thunk)),
 )
+
+export type RootState = ReturnType<typeof rootReducers>;
+
 
 export default store

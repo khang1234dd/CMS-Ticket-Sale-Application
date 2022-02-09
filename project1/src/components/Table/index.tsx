@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import './style.scss'
 import { styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import Table from "@mui/material/Table";
@@ -9,6 +10,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Status from "../common/Status";
+import {formatDate, formatTime} from '../../utils/formatDate'
+import {formatNumber} from '../../utils/formatNumber'
+import {ReactComponent as CapNhatSVG} from '../../assets/svg/capnhat.svg'
+import Button from "@mui/material/Button";
+
 
 type TableProps = {
   dataTable: Array<any>;
@@ -20,9 +26,22 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: "#F1F4F8",
     color: "#1E0D03",
     fontWeight: "bold",
+    fontSize: 14,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: 12,
+  },
+}));
+
+const StyledTableCellDoiSoat = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#F1F4F8",
+    color: "#1E0D03",
+    fontWeight: "bold",
+    fontSize: 11.5,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 11,
   },
 }));
 
@@ -55,6 +74,16 @@ const tableStyle = makeStyles({
   },
 });
 
+const StyleButton = styled(Button)({
+  color: '#FF993C',
+  fontSize: '1rem',
+  textTransform: 'none',
+  '&:hover':{
+      backgroundColor: '#FFEAD8'
+  }
+})
+
+
 export default function CustomizedTables({ dataTable, type }: TableProps) {
   const classes = tableStyle();
 
@@ -71,6 +100,41 @@ export default function CustomizedTables({ dataTable, type }: TableProps) {
     }
   };
 
+  const renderDoiSoat = (value: Boolean) => {
+    switch (value) {
+      case true:
+        return <em className="Table-doisoat-dadoisoat">Đã đối soat</em>;
+      case false:
+        return  <em className="Table-doisoat-chuadoisoat">Chưa đối soát</em>;
+      default:
+        return  <em ></em>;
+    }
+  };
+
+  const renderTinhTrang = (value: Boolean) => {
+    switch (value) {
+      case true:
+        return <Status status="dangapdung" style={{width: "100%"}}></Status>;
+      case false:
+        return  <Status status="tat" style={{width:'50%'}}></Status>;
+      default:
+        return  <Status status="dangapdung" style={{width: "100%"}}></Status>;
+    }
+  };
+
+  const renderTien = (value: number,type: 'giave' | 'giacombo') => {
+    if(value !== 0 && type==='giave'){
+      return formatNumber(value)+ ' ' + "VNĐ"
+    }
+    else if(value !== 0 && type==='giacombo')
+    {
+      return formatNumber(value) + ' '  + "VNĐ/4 Vé"
+    }
+    else {return <></>}
+  };
+
+
+
   return (
     <TableContainer component={Paper} className={classes.table}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -83,28 +147,28 @@ export default function CustomizedTables({ dataTable, type }: TableProps) {
                 <StyledTableCell>Số vé</StyledTableCell>
                 <StyledTableCell>Tên sự kiện</StyledTableCell>
                 <StyledTableCell>Tình trạng sử dụng</StyledTableCell>
-                <StyledTableCell>Ngày sử dụng</StyledTableCell>
-                <StyledTableCell>Ngày xuất vé</StyledTableCell>
+                <StyledTableCell align="right">Ngày sử dụng</StyledTableCell>
+                <StyledTableCell align="right">Ngày xuất vé</StyledTableCell>
                 <StyledTableCell>Cổng check - in</StyledTableCell>
               </>
             ) : type === "doisoatve" ? (
               <>
-                <StyledTableCell>STT</StyledTableCell>
-                <StyledTableCell>Số vé</StyledTableCell>
-                <StyledTableCell>Tên sự kiện</StyledTableCell>
-                <StyledTableCell>Ngày sử dụng</StyledTableCell>
-                <StyledTableCell>Tên loại vé</StyledTableCell>
-                <StyledTableCell>Cổng check - in</StyledTableCell>
-                <StyledTableCell>&nbsp;</StyledTableCell>
+                <StyledTableCellDoiSoat >STT</StyledTableCellDoiSoat>
+                <StyledTableCellDoiSoat >Số vé</StyledTableCellDoiSoat>
+                <StyledTableCellDoiSoat >Tên sự kiện</StyledTableCellDoiSoat>
+                <StyledTableCellDoiSoat align="right">Ngày sử dụng</StyledTableCellDoiSoat>
+                <StyledTableCellDoiSoat >Tên loại vé</StyledTableCellDoiSoat>
+                <StyledTableCellDoiSoat >Cổng check - in</StyledTableCellDoiSoat>
+                <StyledTableCellDoiSoat>&nbsp;</StyledTableCellDoiSoat>
               </>
             ) : (
               <>
                 <StyledTableCell>STT</StyledTableCell>
                 <StyledTableCell>Mã gói</StyledTableCell>
                 <StyledTableCell>Tên gói vé</StyledTableCell>
-                <StyledTableCell>Ngày áp dụng</StyledTableCell>
-                <StyledTableCell>Ngày hết hạn</StyledTableCell>
-                <StyledTableCell>Giá vé (VNĐ/Vé)</StyledTableCell>
+                <StyledTableCell align="right">Ngày áp dụng</StyledTableCell>
+                <StyledTableCell align="right">Ngày hết hạn</StyledTableCell>
+                <StyledTableCell align="right">Giá vé (VNĐ/Vé)</StyledTableCell>
                 <StyledTableCell>Giá Combo (VNĐ/Combo)</StyledTableCell>
                 <StyledTableCell>Tình trạng</StyledTableCell>
                 <StyledTableCell>&nbsp;</StyledTableCell>
@@ -124,29 +188,29 @@ export default function CustomizedTables({ dataTable, type }: TableProps) {
                   <StyledTableCell>{row.sove}</StyledTableCell>
                   <StyledTableCell>{row.tensukien}</StyledTableCell>
                   <StyledTableCell>{renderTTSD(row.ttsd)}</StyledTableCell>
-                  <StyledTableCell>{row.ngaysudung}</StyledTableCell>
-                  <StyledTableCell>{row.ngayxuatve}</StyledTableCell>
+                  <StyledTableCell align="right">{formatDate(row.ngaysudung)}</StyledTableCell>
+                  <StyledTableCell align="right">{formatDate(row.ngayxuatve)}</StyledTableCell>
                   <StyledTableCell>{row.cong}</StyledTableCell>
                 </>
               ) : type === "doisoatve" ? (
                 <>
-                  <StyledTableCell>{row.bookingcode}</StyledTableCell>
-                  <StyledTableCell>{row.sove}</StyledTableCell>
-                  <StyledTableCell>{row.tensukien}</StyledTableCell>
-                  <StyledTableCell>{renderTTSD(row.ttsd)}</StyledTableCell>
-                  <StyledTableCell>{row.ngaysudung}</StyledTableCell>
-                  <StyledTableCell>{row.ngayxuatve}</StyledTableCell>
-                  <StyledTableCell>{row.cong}</StyledTableCell>
+                  <StyledTableCellDoiSoat >{row.sove}</StyledTableCellDoiSoat>
+                  <StyledTableCellDoiSoat >{row.tensukien}</StyledTableCellDoiSoat>
+                  <StyledTableCellDoiSoat align="right">{formatDate(row.ngaysudung)}</StyledTableCellDoiSoat>
+                  <StyledTableCellDoiSoat >{row.loaive}</StyledTableCellDoiSoat>
+                  <StyledTableCellDoiSoat >{row.cong}</StyledTableCellDoiSoat>
+                  <StyledTableCellDoiSoat >{renderDoiSoat(row.doisoat)}</StyledTableCellDoiSoat>
                 </>
               ) : (
                 <>
-                  <StyledTableCell>{row.bookingcode}</StyledTableCell>
-                  <StyledTableCell>{row.sove}</StyledTableCell>
-                  <StyledTableCell>{row.tensukien}</StyledTableCell>
-                  <StyledTableCell>{renderTTSD(row.ttsd)}</StyledTableCell>
-                  <StyledTableCell>{row.ngaysudung}</StyledTableCell>
-                  <StyledTableCell>{row.ngayxuatve}</StyledTableCell>
-                  <StyledTableCell>{row.cong}</StyledTableCell>
+                  <StyledTableCell>{row.ma}</StyledTableCell>
+                  <StyledTableCell>{row.ten}</StyledTableCell>
+                  <StyledTableCell align="right"><div>{formatDate(row.ngayapdung)}</div> <div>{formatTime(row.ngayapdung)}</div></StyledTableCell>
+                  <StyledTableCell align="right"><div>{formatDate(row.ngayhethan)}</div> <div>{formatTime(row.ngayhethan)}</div></StyledTableCell>
+                  <StyledTableCell align="right">{renderTien(row.giave,'giave')}</StyledTableCell>
+                  <StyledTableCell>{renderTien(row.giacombo,'giacombo')}</StyledTableCell>
+                  <StyledTableCell>{renderTinhTrang(row.tinhtrang)}</StyledTableCell>
+                  <StyledTableCell><StyleButton startIcon={<CapNhatSVG/>}>Cập nhật</StyleButton> </StyledTableCell>
                 </>
               )}
             </StyledTableRow>

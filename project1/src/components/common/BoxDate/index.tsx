@@ -5,6 +5,11 @@ import { IconButton,Popover } from "@mui/material";
 import Calendar from "../../Calendar";
 import { makeStyles, withStyles } from "@mui/styles";
 
+type BoxDateProps = {
+  style?: React.CSSProperties | {}
+  styleText?:React.CSSProperties | {}
+}
+
 const StylePopover = withStyles({
   root: {
     "&	.MuiPopover-paper": {
@@ -13,7 +18,7 @@ const StylePopover = withStyles({
   },
 })(Popover);
 
-const BoxDate = () => {
+const BoxDate = ({style,styleText}:BoxDateProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,8 +32,8 @@ const BoxDate = () => {
   const id = open ? 'simple-popover' : undefined;
 
   return (
-    <div className="boxdate">
-      <div className="boxdate-text">Tháng 4, 2021</div>
+    <div className="boxdate" style={style}>
+      <div className="boxdate-text" style={styleText}>Tháng 4, 2021</div>
       <IconButton onClick={handleClick}>
         <DatePickerIcon></DatePickerIcon>
       </IconButton>

@@ -39,7 +39,7 @@ const Pagination = () => {
       setPage(page-1);
 }
   return (
-    <>
+    <div className="PaginationWrap">
       <button className="buttonPagination" style={page !== 1? {color: '#FF993C'} :{}} onClick={handleChangePrevPage}>
         <PrevIcon></PrevIcon>
       </button>
@@ -55,7 +55,7 @@ const Pagination = () => {
       <button className="buttonPagination" style={page !== 20? {color: '#FF993C'} :{}} onClick={handleChangeNextPage}>
         <NextIcon></NextIcon>
       </button>
-    </>
+    </div>
   );
 };
 

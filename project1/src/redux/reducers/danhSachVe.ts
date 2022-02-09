@@ -4,10 +4,10 @@ interface danhSachVeState{
         sove: number,
         tensukien: string,
         ttsd: string,
-        ngaysudung: string,
-        ngayxuatve: string,
+        ngaysudung: Date,
+        ngayxuatve: Date,
         cong: string,
-
+        loaive: string
     }[]
 }
 

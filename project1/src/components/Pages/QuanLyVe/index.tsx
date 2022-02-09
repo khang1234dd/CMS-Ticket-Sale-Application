@@ -48,9 +48,7 @@ const QuanLyVe = () => {
             <div className="tableMain"> 
                 <Table dataTable={dataTable} type="quanlyve"></Table>
             </div>
-            <div className="tablePagination">
-                <Pagination></Pagination>
-            </div>
+            <Pagination></Pagination>
         </BoxMain>
         <LocVeModal open={open} handleClose={()=>setOpen(false)}></LocVeModal>
     </>

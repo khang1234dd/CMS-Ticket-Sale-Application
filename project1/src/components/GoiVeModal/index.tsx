@@ -75,14 +75,14 @@ const StyleButton1 = {
 const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
   const classes = useStyles();
 
-  const [checked, setChecked] = useState([true, false]);
+  const [checked, setChecked] = useState([false, false]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([event.target.checked, false]);
+    setChecked([event.target.checked, checked[1]]);
   };
 
   const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([false, event.target.checked]);
+    setChecked([checked[0], event.target.checked]);
   };
 
   return (

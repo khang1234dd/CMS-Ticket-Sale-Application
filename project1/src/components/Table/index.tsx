@@ -19,6 +19,7 @@ import Button from "@mui/material/Button";
 type TableProps = {
   dataTable: Array<any>;
   type: "quanlyve" | "doisoatve" | "caidat";
+  handleClick?:(event:React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -84,7 +85,7 @@ const StyleButton = styled(Button)({
 })
 
 
-export default function CustomizedTables({ dataTable, type }: TableProps) {
+export default function CustomizedTables({ dataTable, type,handleClick }: TableProps) {
   const classes = tableStyle();
 
   const renderTTSD = (value: String) => {
@@ -132,8 +133,6 @@ export default function CustomizedTables({ dataTable, type }: TableProps) {
     }
     else {return <></>}
   };
-
-
 
   return (
     <TableContainer component={Paper} className={classes.table}>
@@ -210,7 +209,7 @@ export default function CustomizedTables({ dataTable, type }: TableProps) {
                   <StyledTableCell align="right">{renderTien(row.giave,'giave')}</StyledTableCell>
                   <StyledTableCell>{renderTien(row.giacombo,'giacombo')}</StyledTableCell>
                   <StyledTableCell>{renderTinhTrang(row.tinhtrang)}</StyledTableCell>
-                  <StyledTableCell><StyleButton startIcon={<CapNhatSVG/>}>Cập nhật</StyleButton> </StyledTableCell>
+                  <StyledTableCell><StyleButton startIcon={<CapNhatSVG/>} onClick={handleClick}>Cập nhật</StyleButton> </StyledTableCell>
                 </>
               )}
             </StyledTableRow>

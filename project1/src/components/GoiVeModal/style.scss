@@ -1,0 +1,36 @@
+.GoiVeModal{
+    &-title{
+        display:flex;
+        justify-content:center;
+        align-self: center;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+    &-subtitle{
+        color: #1E0D03;
+        font-size: 1rem;
+        opacity: 1;
+        &-bold{
+            color: #1E0D03;
+            font-size: 1rem;
+            font-weight: bold;
+            opacity: 1;
+        }
+    }
+    
+    &-buttonwrap{
+        display: block;
+        text-align: center;
+        
+    }
+    &-marginTop1{
+        margin-top: 1rem;
+    }
+    &-marginTop2{
+        margin-top: 2rem;
+    }
+    &-marginTop3{
+        margin-top: 3rem;
+    }
+    
+}

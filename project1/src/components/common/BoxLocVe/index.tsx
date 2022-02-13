@@ -44,7 +44,7 @@ const BoxLocVe = () => {
     <Box sx={BoxLocVeStyle}>
       <div className="BoxLocVe-title">Lọc vé</div>
       <div className="BoxLocVe-marginTop-2">
-        <Select></Select>
+        <Select type="outline"></Select>
       </div>
       <div className="BoxLocVe-marginTop-15">
         <FormControl className="BoxLocVe-formStyle">

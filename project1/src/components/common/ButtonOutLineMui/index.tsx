@@ -23,7 +23,7 @@ const StyleButton = styled(Button)({
 
 const ButtonOutLineMui = ({children,style,onClick}:buttonOutLineMuiProps) => {
   return (
-    <StyleButton variant="outlined" style={style} onClick={onClick}>
+    <StyleButton variant="outlined" sx={style} onClick={onClick}>
         {children}
     </StyleButton>
   );

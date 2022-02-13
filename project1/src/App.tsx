@@ -5,6 +5,7 @@ import Search from './components/Search';
 import Status from './components/common/Status/index'
 import Routers from './Routers';
 import Calendar from './components/Calendar';
+import BoxTime from './components/common/BoxTime';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       {/* <Calendar></Calendar> */}
       {/* <Search /> */}
       {/* <Status status="dangsudung" /> */}
+      {/* <BoxTime></BoxTime> */}
     </div>
   );
 }

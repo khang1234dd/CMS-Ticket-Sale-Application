@@ -1,0 +1,14 @@
+.BoxTime{
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+    border: 1px solid #E5E0E0;
+    border-radius:4px;
+    max-width: 170px;
+    height:40px;
+    background-color: #fff;
+    padding: 9px 12px;
+    &-text{
+        font-size:14px;
+    }
+}

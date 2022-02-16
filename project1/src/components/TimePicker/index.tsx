@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState }from "react";
 import "./style.scss";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
@@ -7,6 +7,13 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Input from "@mui/material/Input";
 import ButtonOutLineMui from "../common/ButtonOutLineMui";
+import { useDispatch } from "react-redux";
+
+type TimePickerProps = {
+  time: Date,
+  handleClose: ()=>void,
+  action: (payload:Object)=>void;
+}
 
 const PrettoSlider = styled(Slider)({
   color: "#FF993C",
@@ -47,16 +54,17 @@ const PrettoSlider = styled(Slider)({
   },
 });
 
-const TimePicker = () => {
-  const [hour, setHour] = React.useState<
+const TimePicker = ({time,handleClose,action}:TimePickerProps) => {
+  const dispatch = useDispatch();
+  const [hour, setHour] = useState<
     number | string | Array<number | string>
-  >(0);
-  const [minute, setMinute] = React.useState<
+  >(time.getHours());
+  const [minute, setMinute] = useState<
     number | string | Array<number | string>
-  >(0);
-  const [second, setSecond] = React.useState<
+  >(time.getMinutes());
+  const [second, setSecond] = useState<
     number | string | Array<number | string>
-  >(0);
+  >(time.getSeconds());
 
   const handleSliderHourChange = (
     event: Event,
@@ -110,6 +118,14 @@ const TimePicker = () => {
       setValue(59);
     }
   };
+
+  const handleClick = ()=>{
+    const timeValue = {second: second, hour: hour, minute: minute}
+
+    dispatch(action(timeValue))
+    handleClose()
+  }
+
   return (
     <div className="TimePicker">
       <Stack
@@ -190,7 +206,7 @@ const TimePicker = () => {
       />
 
       <Stack justifyContent="center" alignItems="center" mt={2}>
-          <ButtonOutLineMui style={{width:'60%'}}>Tạo</ButtonOutLineMui>
+          <ButtonOutLineMui style={{width:'60%'}} onClick={handleClick}>Tạo</ButtonOutLineMui>
       </Stack>
       
     </div>

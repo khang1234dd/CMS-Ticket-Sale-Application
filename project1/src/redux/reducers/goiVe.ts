@@ -1,5 +1,6 @@
 interface goiVeState{
     dataTable: {
+        id:string,
         ma: string,
         ten: string,
         giave: number,
@@ -7,11 +8,20 @@ interface goiVeState{
         ngayapdung: Date,
         ngayhethan: Date,
         tinhtrang:boolean,
+        sove:number
     }[]
+    selectTinhTrang:string,
+    reload: boolean,
+    dataSearchCaiDat:Array<any>
+    searchCaiDat:string
 }
 
 const initialState:goiVeState= {
-    dataTable:[]
+    dataTable:[],
+    selectTinhTrang:'',
+    reload: false,
+    dataSearchCaiDat:[],
+    searchCaiDat:'',
 }
 
 const goiVeReducer = (state=initialState , action:any) => {
@@ -27,8 +37,35 @@ const goiVeReducer = (state=initialState , action:any) => {
         case 'ADD_DATA_TABLE_GOIVE':{
             return { 
                 ...state,
+                reload: !state.reload,
+                selectTinhTrang: ''
             }
         }
+        case 'UPDATE_DATA_TABLE_GOIVE':{
+            return { 
+                ...state,
+                reload: !state.reload,
+                selectTinhTrang: ''
+            }
+        }
+        case 'CHANGE_SELECT_TINHTRANG':{
+            
+            return { 
+                ...state,
+                selectTinhTrang: action.payload
+            }
+        }
+        case 'UPDATE_DATA_SEARCH_CAIDAT':{
+            const newData = action.payload.data
+            const newSearch = action.payload.search
+            return { 
+                ...state,
+                searchCaiDat:newSearch,
+                dataSearchCaiDat: newData
+            }
+        }
+        
+        
         default: {
             return state
         }

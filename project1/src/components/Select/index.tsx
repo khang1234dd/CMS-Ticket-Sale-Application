@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -6,10 +6,13 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { makeStyles } from "@mui/styles";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import { useDispatch, useSelector } from "react-redux";
 
 type SelectProps = {
-  type: "outline" | "basic";
-  sx?: React.CSSProperties
+  type: "outline" | "basic",
+  sx?: React.CSSProperties,
+  dataSelect: Array<string>,
+  action: (payload:any)=>void
 };
 
 const styles = makeStyles({
@@ -51,19 +54,23 @@ const useInputStyles = makeStyles((theme) => ({
   notchedOutline: {},
 }));
 
-const Item = ['Đang áp dụng', 'Tắt']
-const Item1 = ['Hội chợ triển lãm tiêu dùng 2021','Hội chợ triển lãm tiêu dùng 2022','Hội chợ triển lãm tiêu dùng 2023']
 
-export default function BasicSelect({ type, sx }: SelectProps) {
+
+export default function BasicSelect({ type, sx,dataSelect,action }: SelectProps) {
   const classes = styles();
-  const Data = type === 'outline'? Item1 : Item
+  const tensukien = useSelector((state:any) => state.sukien.selectLocVeAction)
+  const tinhtrang = useSelector((state:any) => state.goiVe.selectTinhTrang)
+  console.log("tinhtrang",tinhtrang)
+  const Data = dataSelect 
   const InputClasses =
     // eslint-disable-next-line react-hooks/rules-of-hooks
     type === "outline" ? useOutlinedInputStyles() : useInputStyles();
-  const [value, setValue] = useState<string>(Data[0]);
+  const [value, setValue] = useState<string | undefined>(type==="outline"?tinhtrang :tensukien);
+  const dispatch = useDispatch();
 
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value as string);
+    dispatch(action(event.target.value as string))
   };
 
   return (
@@ -78,6 +85,7 @@ export default function BasicSelect({ type, sx }: SelectProps) {
           inputProps={{ "aria-label": "Without label" }}
           input={<OutlinedInput classes={InputClasses} />}
         >
+          <MenuItem  value=""><em>None</em></MenuItem>
           {Data.map((value,index)=>(<MenuItem key={index.toString()} value={value}>{value}</MenuItem>))}
           
         </Select>

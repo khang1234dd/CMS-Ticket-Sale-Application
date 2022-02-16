@@ -16,11 +16,16 @@ import Input from "../common/Input";
 import Input1 from "../common/Input1";
 import Select from "../Select";
 import BoxTime from "../common/BoxTime";
+import { useDispatch, useSelector } from "react-redux";
+import { capNhatGoiVeValidator, themGoiVeValidator } from "../../helpers/validator";
+import {ReactComponent as PointIcon} from "../../assets/svg/error.svg"
+import { addDataTableGoiVe, changeSelectTinhTrang, updateDataTableGoiVe } from "../../redux/actions";
 
 type GoiVeModalProps = {
   open: boolean | false;
-  handleClose: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleClose: () => void;
   type: "themgoive" | "capnhat";
+  id?: string
 };
 
 const style = {
@@ -71,11 +76,21 @@ const StyleButton1 = {
     backgroundColor: "#cc7a30",
   },
 };
+const dataSelect = ['Đang áp dụng', 'Tắt']
 
-const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
+
+const GoiVeModal = ({ open, handleClose, type,id }: GoiVeModalProps) => {
   const classes = useStyles();
 
+  const tungay = useSelector((state:any) => state.time.dateRange.firstDate)
+  const denngay = useSelector((state:any) => state.time.dateRange.lastDate)
+  const selectTinhTrang = useSelector((state:any) => state.goiVe.selectTinhTrang)
   const [checked, setChecked] = useState([false, false]);
+  const [showError, setShowError] = useState<any>({status: false, error: ""});
+  const [showPointError, setShowPointError] = useState<string |undefined>('');
+
+  const dispatch = useDispatch();
+
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked([event.target.checked, checked[1]]);
@@ -85,6 +100,57 @@ const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
     setChecked([checked[0], event.target.checked]);
   };
 
+  const handleSubmitThem = (e: any) => {
+    e.preventDefault()
+    const ten = e.target.tengoive.value
+    const giave = e.target.giavele.value
+    const giacombo= e.target.giavecombo.value
+    const sove= e.target.sove.value
+    const tinhtrang = selectTinhTrang === "Đang áp dụng"? true : selectTinhTrang === "Tắt" ? false : undefined
+
+    const isValidator = themGoiVeValidator(ten,giave,giacombo,sove,checked,tinhtrang)
+
+    if(isValidator.success){
+      console.log("success", isValidator.success)
+      setShowPointError('')
+      setShowError({...showError, status: false})
+      dispatch(addDataTableGoiVe({ten,giave,giacombo,sove,ngayapdung:tungay,ngayhethan:denngay,tinhtrang}))
+      handleClose()
+    }else{
+      console.log(isValidator)
+      setShowPointError(isValidator.field)
+      setShowError({status: true,error: isValidator.message})
+    }
+
+  }
+
+  const handleSubmitCapNhat = (e: any) => {
+    e.preventDefault()
+    const ma = e.target.masukien.value
+    const ten = e.target.tensukien.value
+    const giave = e.target.giavele.value
+    const giacombo= e.target.giavecombo.value
+    const sove= e.target.sove.value
+
+    const tinhtrang = selectTinhTrang === "Đang áp dụng"? true : selectTinhTrang === "Tắt" ? false : undefined
+
+    const isValidator = capNhatGoiVeValidator(ma,ten,giave,giacombo,sove,checked,tinhtrang)
+
+    if(isValidator.success){
+      console.log("success", isValidator.success)
+      setShowPointError('')
+      setShowError({...showError, status: false})
+      dispatch(updateDataTableGoiVe({id,ma,ten,giave,giacombo,sove,ngayapdung:tungay,ngayhethan:denngay,tinhtrang}))
+      handleClose()
+
+    }else{
+      console.log(isValidator)
+      setShowPointError(isValidator.field)
+      setShowError({status: true,error: isValidator.message})
+    }
+
+  }
+
   return (
     <Modal
       open={open}
@@ -92,24 +158,24 @@ const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box sx={style} component="form" onSubmit={type==="themgoive"?handleSubmitThem: handleSubmitCapNhat}>
         {type === "themgoive" ? (
-          <div className="GoiVeModal-title">Thêm gói vé</div>
+          <div className="GoiVeModal-title">Thêm gói vé </div>
         ) : (
           <div className="GoiVeModal-title">Cập nhật thông tin gói vé</div>
         )}
 
         {type === "themgoive" ? (
           <Grid container mt={3}>
-            <div className="GoiVeModal-subtitle">Tên gói vé</div>
+            <div className="GoiVeModal-subtitle">Tên gói vé {showPointError === "tengoive"?<PointIcon />:<></>}</div>
           </Grid>
         ) : (
           <Grid container spacing={1} mt={3}>
             <Grid xs={6} item>
-              <div className="GoiVeModal-subtitle">Mã sự kiện</div>
+              <div className="GoiVeModal-subtitle">Mã sự kiện {showPointError === "masukien"?<PointIcon />:<></>}</div>
             </Grid>
             <Grid xs item>
-              <div className="GoiVeModal-subtitle">Tên sự kiện</div>
+              <div className="GoiVeModal-subtitle">Tên sự kiện {showPointError === "tensukien"?<PointIcon />:<></>}</div>
             </Grid>
           </Grid>
         )}
@@ -117,7 +183,7 @@ const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
         {type === "themgoive" ? (
           <Grid container spacing={1} mt={0.5}>
             <Grid xs={6} item>
-              <Input1 placeholder="Nhập tên gói vé"></Input1>
+              <Input1 name="tengoive" placeholder="Nhập tên gói vé"></Input1>
             </Grid>
           </Grid>
         ) : (
@@ -125,11 +191,12 @@ const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
             <Grid xs={6} item>
               <Input1
                 style={{ width: "80%" }}
+                name="masukien"
                 placeholder="Nhập mã sự kiện..."
               ></Input1>
             </Grid>
             <Grid xs item>
-              <Input1 placeholder="Nhập tên sự kiện..."></Input1>
+              <Input1 name="tensukien" placeholder="Nhập tên sự kiện..."></Input1>
             </Grid>
           </Grid>
         )}
@@ -145,13 +212,13 @@ const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
 
         <Grid container spacing={1} mt={0.5}>
           <Grid xs={6} container item direction="row">
-            <BoxDate style={{ marginRight: "6px", ...StyleBoxDate }}></BoxDate>
-            <BoxTime style={StyleBoxDate}></BoxTime>
+            <BoxDate type="rangeFirst" style={{ marginRight: "6px", ...StyleBoxDate }}></BoxDate>
+            <BoxTime type="rangeFirst" style={StyleBoxDate}></BoxTime>
           </Grid>
 
           <Grid xs={6} container item direction="row">
-            <BoxDate style={{ marginRight: "6px", ...StyleBoxDate }}></BoxDate>
-            <BoxTime style={StyleBoxDate}></BoxTime>
+            <BoxDate type="rangeLast" style={{ marginRight: "6px", ...StyleBoxDate }}></BoxDate>
+            <BoxTime type="rangeLast" style={StyleBoxDate}></BoxTime>
           </Grid>
         </Grid>
 
@@ -162,7 +229,7 @@ const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
             id="GoiVeModal-group-checkbox"
             sx={{ color: "#1E0D03", fontWeight: 500 }}
           >
-            Giá vé áp dụng
+            Giá vé áp dụng {showPointError === "giavele" || showPointError === "giavecombo" || showPointError === "sove" ?<PointIcon />:<></>}
           </FormLabel>
           <Grid container direction="column" spacing={1}>
             <Grid item xs>
@@ -175,7 +242,7 @@ const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
                 label={
                   <>
                     Vé lẻ (vnđ/vé) với giá &nbsp;
-                    <Input style={{ width: "40%" }} placeholder="Giá vé" />
+                    <Input name="giavele" style={{ width: "40%" }} placeholder="Giá vé" readOnly={checked[0]? false :true } />
                     &nbsp; / vé
                   </>
                 }
@@ -194,9 +261,9 @@ const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
                 label={
                   <>
                     Combo vé với giá &nbsp;
-                    <Input style={{ width: "30%" }} placeholder="Giá vé" />
+                    <Input name="giavecombo" style={{ width: "30%" }} placeholder="Giá vé" readOnly={checked[1]? false :true }/>
                     &nbsp; / &nbsp;
-                    <Input style={{ width: "20%" }} placeholder="Giá vé" />
+                    <Input name="sove" style={{ width: "20%" }} placeholder="Số vé" readOnly={checked[1]? false :true } />
                     &nbsp;vé
                   </>
                 }
@@ -207,16 +274,22 @@ const GoiVeModal = ({ open, handleClose, type }: GoiVeModalProps) => {
 
         <Grid container spacing={1} mt={2} direction="column">
           <Grid xs item>
-            <div className="LocVeModal-subtitle">Tình trạng</div>
+            <div className="LocVeModal-subtitle">Tình trạng {showPointError === "tinhtrang"?<PointIcon />:<></>}</div>
           </Grid>
           <Grid xs item>
-            <Select sx={{ width: "30%" }} type="basic"></Select>
+            <Select action={changeSelectTinhTrang} dataSelect={dataSelect} sx={{ width: "30%" }} type="basic"></Select>
           </Grid>
+          {showError.status ?
+          <Grid xs item>
+             <em style={{color:"silver" }}><PointIcon /> {showError.error} </em>
+          </Grid>
+          : <></>
+            }
         </Grid>
 
         <div className="GoiVeModal-buttonwrap GoiVeModal-marginTop2">
-          <ButtonOutLineMui style={{ ...StyleButton }}>Hủy</ButtonOutLineMui>
-          <ButtonOutLineMui style={{ ...StyleButton, ...StyleButton1 }}>
+          <ButtonOutLineMui style={{ ...StyleButton }} onClick={handleClose}>Hủy</ButtonOutLineMui>
+          <ButtonOutLineMui type="submit" style={{ ...StyleButton, ...StyleButton1 }}>
             Lưu
           </ButtonOutLineMui>
         </div>

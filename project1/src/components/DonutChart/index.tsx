@@ -1,22 +1,17 @@
 import { fontSize } from "@mui/system";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ApexChart from "react-apexcharts";
 
 type DonutChartProps = {
-  data: number[]
-}
-
-const totalSeries = (series:number[]) => {
-  let total = 0;
-  series.forEach((element:number) => {
-    total = total+ element
-  });
-  return total;
+  data: number[],
 }
 
 const DonutChart = ({data}:DonutChartProps) => {
+
   
-  const series = data;
+  const series = [...data];
+
+  // const [total, setTotal] = useState<Array<number>>(series)
   
   const options: any = {
     chart: {
@@ -53,8 +48,13 @@ const DonutChart = ({data}:DonutChartProps) => {
         fontWeight: 400,
         fontSize: '2rem',
       },
-      formatter: function (val:any) {
-        const value = (val/100)* totalSeries(series)
+      formatter: function (val:any,{ seriesIndex, dataPointIndex, w }:any) {
+        let total = 0
+        console.log(w.series)
+        w.config.series.forEach((e:any)=>{
+          total = total+e
+        })
+        const value = (val/100) * total
         if(value-Math.floor(value) < 0.5){
           return Math.floor(value)
         }else {

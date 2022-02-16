@@ -104,7 +104,7 @@ export default function CustomizedTables({ dataTable, type,handleClick }: TableP
   const renderDoiSoat = (value: Boolean) => {
     switch (value) {
       case true:
-        return <em className="Table-doisoat-dadoisoat">Đã đối soat</em>;
+        return <em className="Table-doisoat-dadoisoat">Đã đối soát</em>;
       case false:
         return  <em className="Table-doisoat-chuadoisoat">Chưa đối soát</em>;
       default:
@@ -123,13 +123,13 @@ export default function CustomizedTables({ dataTable, type,handleClick }: TableP
     }
   };
 
-  const renderTien = (value: number,type: 'giave' | 'giacombo') => {
+  const renderTien = (value: number,sove:number,type: 'giave' | 'giacombo') => {
     if(value !== 0 && type==='giave'){
       return formatNumber(value)+ ' ' + "VNĐ"
     }
     else if(value !== 0 && type==='giacombo')
     {
-      return formatNumber(value) + ' '  + "VNĐ/4 Vé"
+      return formatNumber(value) + ' '  + `VNĐ/${sove} Vé`
     }
     else {return <></>}
   };
@@ -206,10 +206,10 @@ export default function CustomizedTables({ dataTable, type,handleClick }: TableP
                   <StyledTableCell>{row.ten}</StyledTableCell>
                   <StyledTableCell align="right"><div>{formatDate(row.ngayapdung)}</div> <div>{formatTime(row.ngayapdung)}</div></StyledTableCell>
                   <StyledTableCell align="right"><div>{formatDate(row.ngayhethan)}</div> <div>{formatTime(row.ngayhethan)}</div></StyledTableCell>
-                  <StyledTableCell align="right">{renderTien(row.giave,'giave')}</StyledTableCell>
-                  <StyledTableCell>{renderTien(row.giacombo,'giacombo')}</StyledTableCell>
+                  <StyledTableCell align="right">{renderTien(row.giave,row.sove,'giave')}</StyledTableCell>
+                  <StyledTableCell>{renderTien(row.giacombo,row.sove,'giacombo')}</StyledTableCell>
                   <StyledTableCell>{renderTinhTrang(row.tinhtrang)}</StyledTableCell>
-                  <StyledTableCell><StyleButton startIcon={<CapNhatSVG/>} onClick={handleClick}>Cập nhật</StyleButton> </StyledTableCell>
+                  <StyledTableCell><StyleButton startIcon={<CapNhatSVG/>} onClick={handleClick} value={row.id}>Cập nhật</StyleButton> </StyledTableCell>
                 </>
               )}
             </StyledTableRow>

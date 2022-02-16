@@ -25,7 +25,7 @@ const index = () => {
             <Grid item xs={2.2} sx={{minWidth:'280px'}} lg={1}>
             </Grid>
             <Grid container item xs={3}>
-              <Search name="Search"></Search>
+              <Search name="Search" action={()=>{}} data={[]} search="" type="searchNav"></Search>
             </Grid>
             <Grid item xs>
             </Grid>

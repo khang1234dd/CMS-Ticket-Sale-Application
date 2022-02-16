@@ -12,10 +12,12 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { makeStyles, withStyles } from "@mui/styles";
 import ButtonOutLineMui from "../common/ButtonOutLineMui";
+import { useDispatch, useSelector } from "react-redux";
+import { addDateDSVAction, locVe } from "../../redux/actions";
 
 type LocVeModalProps = {
   open: boolean | false;
-  handleClose: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleClose: () => void;
 };
 
 const style = {
@@ -48,15 +50,29 @@ const StyleCheckBox = withStyles({
   },
 })(Checkbox);
 
+const changeDataRadio = (radio:string) => {
+  if(radio === "tatca"){
+    return 0
+  }else if(radio === "dasudung"){
+    return 1
+  }else if(radio === "chuasudung"){
+    return 2
+  }else {
+    return 3
+  }
+}
+
 const LocVeModal = ({ open, handleClose }: LocVeModalProps) => {
-  const [checked, setChecked] = useState([
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const initTTSD = useSelector((state:any) => state.danhSachVe.ttsd)
+  const initCong = useSelector((state:any) => state.danhSachVe.cong)
+  const [radio,setRadio] = useState(initTTSD === 0? "tatca" : initTTSD === 1 ? "dasudung" : "chuasudung")
+  
+  const dispatch = useDispatch();
+
+  const [checked, setChecked] = useState(initCong);
+  const handleChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRadio((event.target as HTMLInputElement).value);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked([event.target.checked, false, false, false, false, false]);
@@ -116,6 +132,13 @@ const LocVeModal = ({ open, handleClose }: LocVeModalProps) => {
       event.target.checked,
     ]);
   };
+
+  const handleClick = () =>{
+    const dataRadio = changeDataRadio(radio)
+    dispatch(locVe({ttsd: dataRadio, cong: checked}))
+    dispatch(addDateDSVAction)
+    handleClose()
+  }
   return (
     <Modal
       open={open}
@@ -136,10 +159,10 @@ const LocVeModal = ({ open, handleClose }: LocVeModalProps) => {
 
         <Grid container spacing={1} mt={0.5}>
           <Grid xs={5} item>
-            <BoxDate></BoxDate>
+            <BoxDate type="tungaydsv"></BoxDate>
           </Grid>
           <Grid xs item>
-            <BoxDate></BoxDate>
+            <BoxDate type="denngaydsv"></BoxDate>
           </Grid>
         </Grid>
 
@@ -156,24 +179,26 @@ const LocVeModal = ({ open, handleClose }: LocVeModalProps) => {
             aria-labelledby="LocVeModal-group"
             name="row-radio-buttons-group"
             className="LocVeModal-radiolabel"
+            value={radio}
+            onChange={handleChangeRadio}
           >
             <FormControlLabel
-              value="0"
+              value="tatca"
               control={<StyleRadio />}
               label="Tất cả"
             />
             <FormControlLabel
-              value="1"
+              value="dasudung"
               control={<StyleRadio />}
               label="Đã sử dụng"
             />
             <FormControlLabel
-              value="2"
+              value="chuasudung"
               control={<StyleRadio />}
               label="Chưa sử dụng"
             />
             <FormControlLabel
-              value="3"
+              value="hethan"
               // disabled
               control={<StyleRadio className="LocVeModal-radioColors" />}
               label="Hết hạn"
@@ -269,7 +294,7 @@ const LocVeModal = ({ open, handleClose }: LocVeModalProps) => {
         </FormControl>
 
         <div className="LocVeModal-buttonwrap LocVeModal-marginTop2">
-          <ButtonOutLineMui style={{width:'40%', height:'80%'}}>Lọc</ButtonOutLineMui>
+          <ButtonOutLineMui style={{width:'40%', height:'80%'}} onClick={handleClick}>Lọc</ButtonOutLineMui>
         </div>
       </Box>
     </Modal>

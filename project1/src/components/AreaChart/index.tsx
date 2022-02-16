@@ -1,10 +1,14 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
+type AreaChartProps = {
+  data: Array<number>
 
-const AreaChart = () => {
+}
+
+const AreaChart = ({data}:AreaChartProps) => {
   const xList = ["Thứ 2","Thứ 3" ,"Thứ 4","Thứ 5", "Thứ 6", "Thứ 7", "CN"];
-  const yList = [148 ,170, 190, 231, 212, 215 , 188];
+  const yList = [...data];
 
   const chartSeries = [
     {

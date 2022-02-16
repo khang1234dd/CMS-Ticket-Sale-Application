@@ -5,7 +5,7 @@ import Search from "../../Search";
 import ButtonOutLine from "../../common/ButtonOutLine";
 import { ReactComponent as Filter } from "../../../assets/svg/filter.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { getDataTableGoiVe } from "../../../redux/actions";
+import { changeSelectTinhTrang, getDataTableGoiVe, updateDataSearchCaiDat } from "../../../redux/actions";
 import Table from "../../Table";
 import GoiVeModal from "../../GoiVeModal";
 
@@ -14,26 +14,31 @@ const CaiDat = () => {
   const [openCapNhat,setOpenCapNhat] = useState<boolean>(false);
   const dispatch = useDispatch();
   const dataTable = useSelector((state: any) => state.goiVe.dataTable);
+  const reload = useSelector((state: any) => state.goiVe.reload);
+  const [idItem,setIdItem] = useState('')
+
+  const dataSearchCaiDat = useSelector((state:any) => state.goiVe.dataSearchCaiDat)
+  const search = useSelector((state:any) => state.goiVe.searchCaiDat)
 
   const handleOpenModal = () => {
     setOpen(true);
   };
-  const handleOpenCapNhatModal = () => {
+  const handleOpenCapNhatModal = (e:React.MouseEvent<HTMLButtonElement>) => {
+    setIdItem(e.currentTarget.value);
     setOpenCapNhat(true);
   };
   
-  const handleCloseModal = () => setOpen(false);
-  const handleCloseCapNhatModal = () => setOpenCapNhat(false);
+  const handleCloseModal = () => {setOpen(false); dispatch(changeSelectTinhTrang(""))};
+  const handleCloseCapNhatModal = () => {setOpenCapNhat(false); dispatch(changeSelectTinhTrang(""))};
 
   useEffect(() => {
     dispatch(getDataTableGoiVe());
-    console.log("dataTable - view =>", dataTable);
-  }, []);
+  }, [reload]);
 
   return (
     <BoxMain header="Danh sách gói vé">
       <div className="subHeaderStyle">
-        <Search name="Tìm bằng số vé"></Search>
+        <Search data={dataTable} action={updateDataSearchCaiDat} search={search} type="searchMaGoi" name="Tìm bằng số vé"></Search>
         <div className="subHeaderStyle-btStyle">
           <ButtonOutLine style={{ marginRight: "1rem" }}>
             <div style={{ fontSize: "1rem" }}>Xuất file (.csv)</div>
@@ -44,10 +49,10 @@ const CaiDat = () => {
         </div>
       </div>
       <div className="CaiDat-marginTop2">
-        <Table handleClick={handleOpenCapNhatModal} dataTable={dataTable} type="caidat"></Table>
+        {search ===""?<Table handleClick={handleOpenCapNhatModal} dataTable={dataTable} type="caidat"></Table>:<Table handleClick={handleOpenCapNhatModal} dataTable={dataSearchCaiDat} type="caidat"></Table>}
       </div>
       <GoiVeModal type="themgoive" open={open} handleClose={handleCloseModal}></GoiVeModal>
-      <GoiVeModal type="capnhat" open={openCapNhat} handleClose={handleCloseCapNhatModal}></GoiVeModal>
+      <GoiVeModal id={idItem} type="capnhat" open={openCapNhat} handleClose={handleCloseCapNhatModal}></GoiVeModal>
     </BoxMain>
   );
 };

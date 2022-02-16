@@ -4,9 +4,10 @@ import Button from '@mui/material/Button';
 import {styled} from '@mui/material/styles'
 
 type buttonOutLineMuiProps = {
+    type?: 'submit' | 'button' | null | undefined
     style?: React.CSSProperties|{}
     children?: React.ReactNode |null
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+    onClick?: any
 }
 
 const StyleButton = styled(Button)({
@@ -21,9 +22,9 @@ const StyleButton = styled(Button)({
     }
 })
 
-const ButtonOutLineMui = ({children,style,onClick}:buttonOutLineMuiProps) => {
+const ButtonOutLineMui = ({children,style,onClick,type}:buttonOutLineMuiProps) => {
   return (
-    <StyleButton variant="outlined" sx={style} onClick={onClick}>
+    <StyleButton type={type === "submit"? "submit" : "button"} variant="outlined" sx={style} onClick={onClick}>
         {children}
     </StyleButton>
   );

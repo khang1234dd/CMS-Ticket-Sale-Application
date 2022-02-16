@@ -4,6 +4,14 @@ import PaginationMUI from "@mui/material/Pagination";
 import { makeStyles } from "@mui/styles";
 import { ReactComponent as NextIcon } from "../../assets/svg/next.svg";
 import { ReactComponent as PrevIcon } from "../../assets/svg/prev.svg";
+import { useDispatch, useSelector } from "react-redux";
+
+type PaginationProps = {
+  action: (payload:Object) =>void
+  totalRows: number,
+  limit:number,
+  page:number,
+}
 
 const useStyles = makeStyles({
   root: {
@@ -23,20 +31,24 @@ const useStyles = makeStyles({
   },
 });
 
-const Pagination = () => {
+const Pagination = ({action,totalRows,limit,page}: PaginationProps) => {
   const classes = useStyles();
-  const totalCount = 20;
-  const [page, setPage] = useState(1);
+  const totalPage =  Math.ceil(totalRows / limit)
+
+
+  const dispatch = useDispatch();
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
+    dispatch(action(value))
   };
   const handleChangeNextPage = () =>{
-      if(page < totalCount)
-        setPage(page+1);
+      if(page < totalRows)
+        dispatch(action(1))
+        // setPage(page+1);
   }
   const handleChangePrevPage = () =>{
     if(page > 1)
-      setPage(page-1);
+      dispatch(action(-1))
+      // setPage(page-1);
 }
   return (
     <div className="PaginationWrap">
@@ -47,7 +59,7 @@ const Pagination = () => {
         page={page}
         onChange={handleChange}
         classes={{ root: classes.root }}
-        count={totalCount}
+        count={totalPage}
         shape="rounded"
         hidePrevButton
         hideNextButton
